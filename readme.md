@@ -1,5 +1,5 @@
 # EAST: An Efficient and Accurate Scene Text Detector
-The following implementation was taken from slightly modified and taken from argman[https://github.com/argman/EAST]
+The following implementation was taken from [argman](https://github.com/argman/EAST) and slightly modified to run on online url images obtained from an s3 bucket.
 ### Introduction
 This is a tensorflow re-implementation of [EAST: An Efficient and Accurate Scene Text Detector](https://arxiv.org/abs/1704.03155v2).
 The features are summarized blow:
