@@ -1,3 +1,6 @@
+# Mac
+.DS_Store
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -24,6 +27,7 @@ wheels/
 *.egg-info/
 .installed.cfg
 *.egg
+
 
 # PyInstaller
 #  Usually these files are written by a python script from a template
@@ -105,3 +109,5 @@ ENV/
 
 # result files for demo
 static/results
+
+tmp/

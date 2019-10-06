@@ -1,5 +1,5 @@
 # EAST: An Efficient and Accurate Scene Text Detector
-
+The following implementation was taken from slightly modified and taken from argman[https://github.com/argman/EAST]
 ### Introduction
 This is a tensorflow re-implementation of [EAST: An Efficient and Accurate Scene Text Detector](https://arxiv.org/abs/1704.03155v2).
 The features are summarized blow:
@@ -16,19 +16,7 @@ The features are summarized blow:
 	+ Use ResNet-50 rather than PVANET
 	+ Use dice loss (optimize IoU of segmentation) rather than balanced cross entropy
 	+ Use linear learning rate decay rather than staged learning rate decay
-+ Speed on 720p (resolution of 1280x720) images:
-	+ Now
-		+ Graphic card: GTX 1080 Ti
-		+ Network fprop: **~50 ms**
-		+ NMS (C++): **~6ms**
-		+ Overall: **~16 fps**
-	+ Then
-		+ Graphic card: K40
-		+ Network fprop: ~150 ms
-		+ NMS (python): ~300ms
-		+ Overall: ~2 fps
 
-Thanks for the author's ([@zxytim](https://github.com/zxytim)) help!
 Please cite his [paper](https://arxiv.org/abs/1704.03155v2) if you find this useful.
 
 ### Contents
@@ -40,9 +28,10 @@ Please cite his [paper](https://arxiv.org/abs/1704.03155v2) if you find this use
 5. [Examples](#examples)
 
 ### Installation
-1. Any version of tensorflow version > 1.0 should be ok.
+1. Please use tensorflow version 1.14
 
 ### Download
+Put both downloaded files into a new folder called tmp
 1. Models trained on ICDAR 2013 (training set) + ICDAR 2015 (training set): [BaiduYun link](http://pan.baidu.com/s/1jHWDrYQ) [GoogleDrive](https://drive.google.com/open?id=0B3APw5BZJ67ETHNPaU9xUkVoV0U)
 2. Resnet V1 50 provided by tensorflow slim: [slim resnet v1 50](http://download.tensorflow.org/models/resnet_v1_50_2016_08_28.tar.gz)
 
@@ -62,9 +51,10 @@ If you have more than one gpu, you can pass gpu ids to gpu_list(like --gpu_list=
 See the examples in training_samples/**
 
 ### Demo
+The demo portion was modified to be used for a test run of a serverless api.
 If you've downloaded the pre-trained model, you can setup a demo server by
 ```
-python3 run_demo_server.py --checkpoint-path /tmp/east_icdar2015_resnet_v1_50_rbox/
+python3 run_demo_server.py --checkpoint_path /tmp/east_icdar2015_resnet_v1_50_rbox/
 ```
 Then open http://localhost:8769 for the web demo. Notice that the URL will change after you submitted an image.
 Something like `?r=49647854-7ac2-11e7-8bb7-80000210fe80` appends and that makes the URL persistent.
@@ -84,7 +74,6 @@ python eval.py --test_data_path=/tmp/images/ --gpu_list=0 --checkpoint_path=/tmp
 
 a text file will be then written to the output path.
 
-
 ### Examples
 Here are some test examples on icdar2015, enjoy the beautiful text boxes!
 ![image_1](demo_images/img_2.jpg)
@@ -92,9 +81,3 @@ Here are some test examples on icdar2015, enjoy the beautiful text boxes!
 ![image_3](demo_images/img_14.jpg)
 ![image_4](demo_images/img_26.jpg)
 ![image_5](demo_images/img_75.jpg)
-
-### Troubleshooting
-+ How to compile lanms on Windows ?
-  + See https://github.com/argman/EAST/issues/120
-
-Please let me know if you encounter any issues(my email boostczc@gmail dot com).

@@ -8,6 +8,8 @@ import cv2
 import numpy as np
 import uuid
 import json
+import requests
+import urllib
 
 import functools
 import logging
@@ -133,7 +135,8 @@ def get_predictor(checkpoint_path):
             'rtparams': rtparams,
             'timing': timer,
         }
-        ret.update(get_host_info())
+
+        # ret.update(get_host_info())
         return ret
 
 
@@ -189,21 +192,43 @@ def save_result(img, rst):
     rst['session_id'] = session_id
     return rst
 
+menu_image_url = 'https://2vdqlmfjbk.execute-api.us-west-2.amazonaws.com/dev/menuimage'
+menu_image_json_path = './tmp/menuIDs.json'
+headers = {'content-type': 'application/json'}
 
+def get_images(menu_image_url: str, menu_image_json_path: str, headers: dict):
+    # get menu images from api
+    menu_image_pairs = []
+    with open(menu_image_json_path) as json_file:
+        print(json_file)
+        json_content = json.loads(json_file.read())
+        for i in range(len(json_content)):
+            for menu_id in json_content[i]:
+                response = requests.get(url=menu_image_url+'/'+menu_id, headers=headers)
+                menu_image_pairs.append(response.json())
+                print(response.json())
+    return menu_image_pairs
 
 checkpoint_path = './east_icdar2015_resnet_v1_50_rbox'
-
+post_json_url = 'https://2vdqlmfjbk.execute-api.us-west-2.amazonaws.com/dev/menujson'
 
 @app.route('/', methods=['POST'])
 def index_post():
     global predictor
     import io
     bio = io.BytesIO()
-    request.files['image'].save(bio)
-    img = cv2.imdecode(np.frombuffer(bio.getvalue(), dtype='uint8'), 1)
-    rst = get_predictor(checkpoint_path)(img)
-
-    save_result(img, rst)
+    menu_image_pairs = get_images(menu_image_url, menu_image_json_path, headers)
+    for pair in menu_image_pairs:
+        menu_id = pair['menuId']
+        image_url = pair['menuImage']
+        resp = urllib.request.urlopen(image_url)
+        img = np.asarray(bytearray(resp.read()), dtype="uint8")
+        img = cv2.imdecode(img, cv2.IMREAD_COLOR)
+        rst = get_predictor(checkpoint_path)(img)
+        data = { 'menuId': menu_id, 'scaledBoxBound': rst['text_lines']}
+        response = requests.post(url=post_json_url, headers=headers, json=data)
+        print(response)
+        save_result(img, rst)
     return render_template('index.html', session_id=rst['session_id'])
 
 
@@ -219,7 +244,7 @@ def main():
         raise RuntimeError(
             'Checkpoint `{}` not found'.format(args.checkpoint_path))
 
-    app.debug = False  # change this to True if you want to debug
+    app.debug = True  # change this to True if you want to debug
     app.run('0.0.0.0', args.port)
 
 if __name__ == '__main__':
