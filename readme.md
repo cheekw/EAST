@@ -76,7 +76,7 @@ a text file will be then written to the output path.
 
 ### Examples
 Here are some test examples on icdar2015, enjoy the beautiful text boxes!
-![image_1](demo_images/output1.jpg)
-![image_2](demo_images/output2.jpg)
-![image_3](demo_images/output3.jpg)
-![image_4](demo_images/output4.jpg)
+![image_1](demo_images/output1.png)
+![image_2](demo_images/output2.png)
+![image_3](demo_images/output3.png)
+![image_4](demo_images/output4.png)
