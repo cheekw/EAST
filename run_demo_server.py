@@ -167,7 +167,7 @@ def draw_illu(illu, rst):
         d = np.array([t['x0'], t['y0'], t['x1'], t['y1'], t['x2'],
                       t['y2'], t['x3'], t['y3']], dtype='int32')
         d = d.reshape(-1, 2)
-        cv2.polylines(illu, [d], isClosed=True, color=(255, 255, 0))
+        cv2.polylines(illu, [d], isClosed=True, color=(0, 255, 0), thickness=2)
     return illu
 
 
@@ -209,7 +209,7 @@ def get_images(menu_image_url: str, menu_image_json_path: str, headers: dict):
                 print(response.json())
     return menu_image_pairs
 
-checkpoint_path = './east_icdar2015_resnet_v1_50_rbox'
+checkpoint_path = './tmp/east_icdar2015_resnet_v1_50_rbox/'
 post_json_url = 'https://2vdqlmfjbk.execute-api.us-west-2.amazonaws.com/dev/menujson'
 
 @app.route('/', methods=['POST'])
