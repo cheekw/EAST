@@ -75,7 +75,7 @@ python eval.py --test_data_path=/tmp/images/ --gpu_list=0 --checkpoint_path=/tmp
 a text file will be then written to the output path.
 
 ### Examples
-Here are some test examples on icdar2015, enjoy the beautiful text boxes!
+Here are some test examples on menu data, enjoy the beautiful text boxes!
 ![image_0](demo_images/output0.png)
 ![image_1](demo_images/output1.png)
 ![image_2](demo_images/output2.png)
